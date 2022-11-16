@@ -11,13 +11,16 @@
     "lint:fix": "eslint src --ext .ts,.tsx --fix"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@sn0wye/eslint-config": "^1.8.1",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
+    "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^2.2.0",
     "eslint": "^8.27.0",
     "typescript": "^4.6.4",
