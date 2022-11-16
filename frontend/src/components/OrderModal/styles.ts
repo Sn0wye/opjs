@@ -181,6 +181,7 @@ export const Button = styled.button<ButtonProps>`
   gap: 0.5rem;
   border-radius: 3rem;
   border: 0;
+  transition: 0.2 background-color ease;
 
   ${({ variant = 'primary' }) =>
     variant === 'primary'
@@ -193,4 +194,8 @@ export const Button = styled.button<ButtonProps>`
           color: #d73035;
           font-weight: bold;
         `}
+
+  &:hover {
+    filter: brightness(0.8);
+  }
 `;
