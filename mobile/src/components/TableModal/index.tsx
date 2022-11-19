@@ -13,17 +13,23 @@ interface ModalProps {
 }
 
 export function TableModal({ open, onClose, onSave }: ModalProps) {
-  const [tableNumber, setTableNumber] = useState('');
+  const [table, setTable] = useState('');
   const isAndroid = Platform.OS === 'android';
-  const isButtonDisabled = tableNumber.length === 0;
+  const isButtonDisabled = table.length === 0;
 
   const handleSubmit = () => {
-    onSave(tableNumber);
+    onSave(table);
+    setTable('');
     onClose();
   };
 
   return (
-    <Modal transparent visible={open} animationType='fade'>
+    <Modal
+      transparent
+      visible={open}
+      animationType='fade'
+      onRequestClose={onClose}
+    >
       <Overlay behavior={isAndroid ? 'height' : 'padding'}>
         <Content>
           <Header>
@@ -38,8 +44,8 @@ export function TableModal({ open, onClose, onSave }: ModalProps) {
               placeholder='Número da mesa'
               placeholderTextColor='#666'
               keyboardType='number-pad'
-              value={tableNumber}
-              onChangeText={setTableNumber}
+              value={table}
+              onChangeText={setTable}
             />
 
             <Button onPress={handleSubmit} disabled={isButtonDisabled}>
