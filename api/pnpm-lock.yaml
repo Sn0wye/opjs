@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@sn0wye/eslint-config': ^1.8.1
   '@types/cors': ^2.8.12
+  '@types/express': ^4.17.14
   '@types/multer': ^1.4.7
   '@types/node': ^18.11.9
   cors: ^2.8.5
@@ -25,6 +26,7 @@ dependencies:
 devDependencies:
   '@sn0wye/eslint-config': 1.8.1_rmayb2veg2btbq6mbmnyivgasy
   '@types/cors': 2.8.12
+  '@types/express': 4.17.14
   '@types/multer': 1.4.7
   '@types/node': 18.11.9
   editorconfig: 1.0.1
