@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList } from 'react-native';
 
 import { CartItem } from '../../types/CartItem';
 import { Product } from '../../types/Product';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { Button } from '../Button';
+import { ConfirmedOrderModal } from '../ConfirmedOrderModal';
 import { MinusCircle } from '../Icons/MinusCircle';
 import { PlusCircle } from '../Icons/PlusCircle';
 import { Text } from '../Text';
@@ -24,17 +25,35 @@ interface Props {
   items: CartItem[];
   onAdd: (product: Product) => void;
   onDecrement: (product: Product) => void;
+  onOrderConfirm: () => void;
 }
 
-export function Cart({ items, onAdd, onDecrement }: Props) {
+export function Cart({ items, onAdd, onDecrement, onOrderConfirm }: Props) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const isCartEmpty = items.length === 0;
   const total = items.reduce((acc, item) => {
     acc += item.product.price * item.quantity;
     return acc;
   }, 0);
 
+  const toggleModal = () => {
+    setIsModalOpen(state => !state);
+  };
+
+  const handleConfirmOrder = () => {
+    toggleModal();
+  };
+
+  const handleOk = () => {
+    toggleModal();
+    onOrderConfirm();
+  };
+
   return (
     <>
+      <ConfirmedOrderModal open={isModalOpen} onOk={handleOk} />
+
       {!isCartEmpty && (
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -94,7 +113,13 @@ export function Cart({ items, onAdd, onDecrement }: Props) {
           )}
         </Total>
 
-        <Button disabled={isCartEmpty}>Confirmar Pedido</Button>
+        <Button
+          disabled={isCartEmpty}
+          onPress={handleConfirmOrder}
+          loading={isLoading}
+        >
+          Confirmar Pedido
+        </Button>
       </Summary>
     </>
   );
