@@ -2,20 +2,22 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
-import http from 'node:http2';
+import http from 'node:http';
 import path from 'node:path';
+import { Server } from 'socket.io';
 
 import { router } from './router';
 
 dotenv.config();
 
+const app = express();
+const server = http.createServer(app);
+export const io = new Server(server);
+const port = process.env.PORT || 3001;
+
 mongoose
   .connect(String(process.env.DATABASE_URL))
   .then(() => {
-    const app = express();
-    const server = http.createServer(app);
-    const port = process.env.PORT || 3001;
-
     app.use((req, res, next) => {
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.setHeader('Access-Control-Allow-Methods', '*');
