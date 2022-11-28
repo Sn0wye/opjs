@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 
-export const Category = styled.TouchableOpacity`
+export const CategoryItem = styled.TouchableOpacity`
   align-items: center;
   margin-left: 24px;
 `;
