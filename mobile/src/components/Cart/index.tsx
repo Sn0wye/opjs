@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FlatList } from 'react-native';
 
+import { api, baseURL } from '../../services/api';
 import { CartItem } from '../../types/CartItem';
 import { Product } from '../../types/Product';
 import { formatCurrency } from '../../utils/formatCurrency';
@@ -26,9 +27,16 @@ interface Props {
   onAdd: (product: Product) => void;
   onDecrement: (product: Product) => void;
   onOrderConfirm: () => void;
+  selectedTable: string;
 }
 
-export function Cart({ items, onAdd, onDecrement, onOrderConfirm }: Props) {
+export function Cart({
+  items,
+  onAdd,
+  onDecrement,
+  onOrderConfirm,
+  selectedTable
+}: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const isCartEmpty = items.length === 0;
@@ -41,7 +49,18 @@ export function Cart({ items, onAdd, onDecrement, onOrderConfirm }: Props) {
     setIsModalOpen(state => !state);
   };
 
-  const handleConfirmOrder = () => {
+  const handleConfirmOrder = async () => {
+    setIsLoading(true);
+
+    const payload = {
+      table: selectedTable,
+      products: items.map(item => ({
+        product: item.product._id,
+        quantity: item.quantity
+      }))
+    };
+    await api.post('/orders', payload);
+    setIsLoading(false);
     toggleModal();
   };
 
@@ -71,7 +90,7 @@ export function Cart({ items, onAdd, onDecrement, onOrderConfirm }: Props) {
                 <Description>
                   <Image
                     source={{
-                      uri: `http://127.0.1.1/uploads/${imagePath}` // TODO: add server url
+                      uri: `${baseURL}/uploads/${imagePath}`
                     }}
                   />
                   <Quantity>
