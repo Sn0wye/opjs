@@ -15,7 +15,6 @@ export const Image = styled.Image`
   width: 48px;
   height: 48px;
   border-radius: 6px;
-  background: slateblue; //TODO: remove this when image is shown
 `;
 
 export const Quantity = styled.View`

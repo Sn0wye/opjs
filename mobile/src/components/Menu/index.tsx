@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FlatList } from 'react-native';
 
+import { baseURL } from '../../services/api';
 import { Product } from '../../types/Product';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { PlusCircle } from '../Icons/PlusCircle';
@@ -52,7 +53,7 @@ export function Menu({ onAddToCart, products }: Props) {
             <Card onPress={() => handleOpenProductModal(item)}>
               <Image
                 source={{
-                  uri: `http://127.0.1.1/uploads/${imagePath}` // TODO: add server url
+                  uri: `${baseURL}/uploads/${imagePath}`
                 }}
               />
               <Details>

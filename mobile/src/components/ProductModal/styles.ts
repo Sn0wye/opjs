@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 
 export const Image = styled.ImageBackground`
-  background: lightblue; //TODO: remove bg when image is shown
   width: 100%;
   height: 200px;
 `;
@@ -14,8 +13,8 @@ export const CloseButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 24;
-  right: 24;
+  top: 24px;
+  right: 24px;
 `;
 
 export const Content = styled.View`

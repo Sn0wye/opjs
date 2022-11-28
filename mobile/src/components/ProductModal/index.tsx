@@ -1,5 +1,6 @@
 import { FlatList, Modal } from 'react-native';
 
+import { baseURL } from '../../services/api';
 import type { Product } from '../../types/Product';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { Button } from '../Button';
@@ -50,7 +51,7 @@ export function ProductModal({
     >
       <Image
         source={{
-          uri: `http://127.0.1.1/uploads/${imagePath}` // TODO: add server url
+          uri: `${baseURL}/uploads/${imagePath}`
         }}
       >
         <CloseButton onPress={onClose}>
