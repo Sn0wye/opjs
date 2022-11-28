@@ -1,6 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { ComponentProps } from 'react';
 
+import { baseURL } from '../../services/api';
 import { Order } from '../../types/Order';
 import { formatCurrency } from '../../utils/formatCurrency';
 import {
@@ -34,12 +35,22 @@ type Props = ComponentProps<typeof Dialog.Root> & {
   isOpen: boolean;
   toggleModal: () => void;
   order: Order | null;
+  onCancel: () => void;
+  isLoading: boolean;
+  onStatusChange: () => void;
 };
 
 const Root = Dialog.Root;
 const Portal = Dialog.Portal;
 
-export const OrderModal = ({ isOpen, toggleModal, order }: Props) => {
+export const OrderModal = ({
+  isOpen,
+  toggleModal,
+  order,
+  onCancel,
+  isLoading,
+  onStatusChange
+}: Props) => {
   if (!order) {
     return null;
   }
@@ -70,7 +81,7 @@ export const OrderModal = ({ isOpen, toggleModal, order }: Props) => {
               {order.products.map(({ _id, product, quantity }) => (
                 <Item key={_id}>
                   <img
-                    src={`http://localhost:3001/uploads/${product.imagePath}`}
+                    src={`${baseURL}/uploads/${product.imagePath}`}
                     alt={product.name}
                     width={56}
                     height={28.51}
@@ -92,12 +103,27 @@ export const OrderModal = ({ isOpen, toggleModal, order }: Props) => {
           </OrderDetails>
 
           <Actions>
-            <Button type='button'>
-              <span>👩‍🍳</span>
-              <strong>Iniciar Produção</strong>
-            </Button>
+            {order.status !== 'DONE' && (
+              <Button
+                type='button'
+                disabled={isLoading}
+                onClick={onStatusChange}
+              >
+                <span>{order.status === 'WAITING' ? '👩‍🍳' : '✅'}</span>
+                <strong>
+                  {order.status === 'WAITING'
+                    ? 'Iniciar Produção'
+                    : 'Concluir Pedido'}
+                </strong>
+              </Button>
+            )}
 
-            <Button type='button' variant='secondary'>
+            <Button
+              type='button'
+              variant='secondary'
+              onClick={onCancel}
+              disabled={isLoading}
+            >
               Cancelar Pedido
             </Button>
           </Actions>

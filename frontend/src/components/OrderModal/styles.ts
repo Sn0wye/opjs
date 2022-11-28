@@ -198,4 +198,9 @@ export const Button = styled.button<ButtonProps>`
   &:hover {
     filter: brightness(0.8);
   }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `;
