@@ -5,7 +5,7 @@ export const Container = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 198px;
+  height: 80px;
 `;
 
 export const Content = styled.div`
@@ -28,4 +28,9 @@ export const PageDetails = styled.div`
     color: #fff;
     opacity: 0.9;
   }
+`;
+
+export const Title = styled.h2`
+  font-size: 2.5rem;
+  color: #fff;
 `;

@@ -1,4 +1,4 @@
-import { Container, Content, PageDetails } from './styles';
+import { Container, Content, PageDetails, Title } from './styles';
 
 export const Header = () => {
   return (
@@ -8,10 +8,7 @@ export const Header = () => {
           <h1>Pedidos</h1>
           <h2>Acompanhe os pedidos dos clientes</h2>
         </PageDetails>
-        <img
-          src='/img/logo.svg'
-          alt='Logo do WaiterApp e texto dizendo WaiterApp, O App do Garçom'
-        />
+        <Title>Waitr</Title>
       </Content>
     </Container>
   );
