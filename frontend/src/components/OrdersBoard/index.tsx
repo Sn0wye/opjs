@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { useOrder } from '../../hooks/useOrder';
 import { api } from '../../services/api';
 import { Order } from '../../types/Order';
 import { OrderModal } from '../OrderModal';
@@ -10,20 +11,14 @@ interface Props {
   icon: string;
   title: string;
   orders: Order[];
-  onCancel: (orderId: string) => void;
-  onStatusChange: (orderId: string, status: Order['status']) => void;
 }
 
-export const OrderBoard = ({
-  title,
-  icon,
-  orders,
-  onCancel,
-  onStatusChange
-}: Props) => {
+export const OrderBoard = ({ title, icon, orders }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { cancelOrder, changeOrderStatus } = useOrder();
 
   const toggleModal = () => {
     setIsModalOpen(state => !state);
@@ -41,7 +36,7 @@ export const OrderBoard = ({
     await api.delete(`/orders/${selectedOrder._id}`);
     toast.success(`O pedido da Mesa ${selectedOrder.table} foi cancelado`);
 
-    onCancel(selectedOrder._id);
+    cancelOrder(selectedOrder._id);
     setIsLoading(false);
     setIsModalOpen(false);
   };
@@ -59,7 +54,7 @@ export const OrderBoard = ({
       `O pedido da mesa ${selectedOrder.table} teve o status alterado!`
     );
 
-    onStatusChange(selectedOrder._id, status);
+    changeOrderStatus(selectedOrder._id, status);
     setIsLoading(false);
     setIsModalOpen(false);
   };
