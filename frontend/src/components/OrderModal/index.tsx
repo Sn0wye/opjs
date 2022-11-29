@@ -1,6 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { ComponentProps } from 'react';
+import { ComponentProps, useState } from 'react';
 
+import { useOrder } from '../../hooks/useOrder';
 import { baseURL } from '../../services/api';
 import { Order } from '../../types/Order';
 import { formatCurrency } from '../../utils/formatCurrency';
@@ -35,22 +36,15 @@ type Props = ComponentProps<typeof Dialog.Root> & {
   isOpen: boolean;
   toggleModal: () => void;
   order: Order | null;
-  onCancel: () => void;
-  isLoading: boolean;
-  onStatusChange: () => void;
 };
 
 const Root = Dialog.Root;
 const Portal = Dialog.Portal;
 
-export const OrderModal = ({
-  isOpen,
-  toggleModal,
-  order,
-  onCancel,
-  isLoading,
-  onStatusChange
-}: Props) => {
+export const OrderModal = ({ isOpen, toggleModal, order }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { changeOrderStatus, cancelOrder } = useOrder();
+
   if (!order) {
     return null;
   }
@@ -59,6 +53,24 @@ export const OrderModal = ({
     acc += quantity * product.price;
     return acc;
   }, 0);
+
+  const handleStatusChange = async () => {
+    const status = order.status === 'WAITING' ? 'IN_PRODUCTION' : 'DONE';
+
+    setIsLoading(true);
+
+    await changeOrderStatus(order, status);
+    setIsLoading(false);
+    toggleModal();
+  };
+
+  const handleCancelOrder = async () => {
+    setIsLoading(true);
+
+    await cancelOrder(order);
+    setIsLoading(false);
+    toggleModal();
+  };
 
   return (
     <Root open={isOpen} onOpenChange={toggleModal}>
@@ -107,7 +119,7 @@ export const OrderModal = ({
               <Button
                 type='button'
                 disabled={isLoading}
-                onClick={onStatusChange}
+                onClick={handleStatusChange}
               >
                 <span>{order.status === 'WAITING' ? '👩‍🍳' : '✅'}</span>
                 <strong>
@@ -121,7 +133,7 @@ export const OrderModal = ({
             <Button
               type='button'
               variant='secondary'
-              onClick={onCancel}
+              onClick={handleCancelOrder}
               disabled={isLoading}
             >
               Cancelar Pedido
